@@ -41,7 +41,7 @@ const OrderConfirmationPage = () => {
                             </li>
                         ))}
                     </ul>
-                    <h4>Total: ${order.totalAmount.toFixed(2)}</h4>
+                    <h4>Total: <i className='fa fa-inr'></i>{order.totalAmount.toFixed(2)}</h4>
                 </div>
             </main>
         </div>

@@ -55,13 +55,13 @@ const CheckoutPage = () => {
                             {cartItems.map(item => (
                                 <li key={item._id}>
                                     <span>{item.quantity} x {item.name}</span>
-                                    <span>${(item.price * item.quantity).toFixed(2)}</span>
+                                    <span><i className='fa fa-inr'></i>{(item.price * item.quantity).toFixed(2)}</span>
                                 </li>
                             ))}
                         </ul>
                         <div className="summary-total">
                             <strong>Total:</strong>
-                            <strong>${totalAmount.toFixed(2)}</strong>
+                            <strong><i className='fa fa-inr'></i>{totalAmount.toFixed(2)}</strong>
                         </div>
                     </div>
 

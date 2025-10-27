@@ -11,7 +11,7 @@ const MenuItem = ({ item }) => {
                 <h3 className="menu-item-name">{item.name}</h3>
                 <p className="menu-item-description">{item.description}</p>
                 <div className="menu-item-footer">
-                    <span className="menu-item-price">${item.price.toFixed(2)}</span>
+                    <span className="menu-item-price"><i className='fa fa-inr'></i>{item.price.toFixed(2)}</span>
                     <button className="add-to-cart-btn" onClick={() => addToCart(item)}>
                         Add to Cart
                     </button>
