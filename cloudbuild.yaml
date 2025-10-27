@@ -1,0 +1,42 @@
+# cloudbuild.yaml (for a single Cloud Run service)
+
+steps:
+# 1. Build the Docker container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '-t', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA',
+    '.'
+  ]
+
+# 2. Push the container image to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA']
+
+# 3. Deploy the container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+    - 'run'
+    - 'deploy'
+    - '${_SERVICE_NAME}' # The name of your Cloud Run service
+    - '--image=${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+    - '--region=${_REGION}'
+    - '--platform=managed'
+    - '--allow-unauthenticated' # Makes your service publicly accessible
+    # Set environment variables securely via the trigger.
+    # The variable name here MUST match the one in your backend/.env file (MONGO_URI)
+    - '--set-env-vars=MONGO_URI=${_MONGO_URI}'
+
+# Define substitution variables that will be configured in the Cloud Build Trigger
+substitutions:
+  _SERVICE_NAME: 'restaurant-app'
+  _REPO_NAME: 'restaurant-repo' # IMPORTANT: You must create this Artifact Registry repo
+  _REGION: 'us-central1'
+
+# Store the built image in Artifact Registry
+images:
+- '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/${_SERVICE_NAME}:$COMMIT_SHA'
+
+# Set a timeout for the build
+timeout: '1600s'
