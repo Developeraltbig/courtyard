@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 import { placeOrder } from '../services/api';
 import Header from '../components/Header';
+import { generateReceipt } from '../utils/receiptGenerator'; // <-- 1. IMPORT THE UTILITY
+
 
 const CheckoutPage = () => {
     const { cartItems, clearCart } = useContext(CartContext);
@@ -41,13 +43,25 @@ const CheckoutPage = () => {
 
         try {
             const response = await placeOrder(orderData);
-            const orderId = response.data._id;
+            
+            // --- 2. GENERATE AND DOWNLOAD RECEIPT ON SUCCESS ---
+            // The response.data contains the complete order object from the server
+            // We need to populate it with the full menuItem details for the receipt
+            const fullOrderDetails = {
+                ...response.data,
+                items: response.data.items.map(item => ({
+                    ...item,
+                    menuItem: cartItems.find(cartItem => cartItem._id === item.menuItem)._doc || cartItems.find(cartItem => cartItem._id === item.menuItem)
+                }))
+            };
+            generateReceipt(fullOrderDetails);
+            
             clearCart();
-            navigate(`/order/${orderId}`);
+            navigate(`/order/${response.data._id}`);
         } catch (error) {
             console.error('Failed to place order:', error);
             alert('Could not place your order. Please try again.');
-            setIsSubmitting(false); // Re-enable the button on error
+            setIsSubmitting(false);
         }
     };
 
