@@ -30,20 +30,20 @@ const Cart = () => {
                                 <li key={item._id} className="list-group-item d-flex justify-content-between align-items-center px-0">
                                     <div>
                                         <div>{item.name}</div>
-                                        <small className="text-muted">${item.price.toFixed(2)}</small>
+                                        <small className="text-muted">₹{item.price.toFixed(2)}</small>
                                     </div>
                                     <div className="d-flex align-items-center">
                                         <button className="btn btn-sm btn-outline-secondary" onClick={() => removeFromCart(item._id)}>-</button>
                                         <span className="mx-2">{item.quantity}</span>
                                         <button className="btn btn-sm btn-outline-secondary" onClick={() => addToCart(item)}>+</button>
                                     </div>
-                                    <span className="fw-bold">${(item.price * item.quantity).toFixed(2)}</span>
+                                    <span className="fw-bold">₹{(item.price * item.quantity).toFixed(2)}</span>
                                 </li>
                             ))}
                         </ul>
                         <div className="d-flex justify-content-between fw-bold fs-5 mt-3 pt-3 border-top">
                             <span>Total:</span>
-                            <span>${totalAmount.toFixed(2)}</span>
+                            <span>₹{totalAmount.toFixed(2)}</span>
                         </div>
                         <div className="d-grid mt-3">
                             <button className="btn btn-success" onClick={handleCheckout}>

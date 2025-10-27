@@ -42,7 +42,7 @@ const MenuItem = ({ item }) => {
                     <h5 className="card-title">{item.name}</h5>
                     <p className="card-text text-muted flex-grow-1">{item.description}</p>
                     <div className="d-flex justify-content-between align-items-center mt-auto">
-                        <span className="fw-bold fs-5 text-danger">${item.price.toFixed(2)}</span>
+                        <span className="fw-bold fs-5 text-danger">₹{item.price.toFixed(2)}</span>
                         {itemInCart ? <QuantityControl /> : <AddToCartButton />}
                     </div>
                 </div>
