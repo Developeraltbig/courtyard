@@ -17,6 +17,7 @@ const OrderSchema = new Schema({
         enum: ['Received', 'Preparing', 'Ready', 'Completed'],
         default: 'Received'
     },
+    estimatedReadyTime: { type: Date },
     createdAt: { type: Date, default: Date.now }
 });
 

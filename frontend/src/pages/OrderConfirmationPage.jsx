@@ -20,7 +20,7 @@ const OrderConfirmationPage = () => {
     }, [orderId]);
 
     if (!order) {
-        return <div className="loading">Loading your order confirmation...</div>;
+        return <div className="d-flex justify-content-center align-items-center vh-100"><h2>Loading Confirmation...</h2></div>;
     }
 
     return (
@@ -30,6 +30,16 @@ const OrderConfirmationPage = () => {
                 <div className="order-status-card">
                     <h2>Thank You, {order.customer.name}!</h2>
                     <p>Your order has been received.</p>
+                    {/* --- ADD ESTIMATED TIME DISPLAY --- */}
+                    {order.estimatedReadyTime && (
+                        <div className="alert alert-info mt-4">
+                            <h4 className="alert-heading">Estimated Ready Time</h4>
+                            <p className="mb-0 fs-4 fw-bold">
+                                {new Date(order.estimatedReadyTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                        </div>
+                    )}
+
                     <p>Order ID: <strong>{order._id}</strong></p>
                     <p>Status: <span className={`status status-${order.status.toLowerCase()}`}>{order.status}</span></p>
                     
