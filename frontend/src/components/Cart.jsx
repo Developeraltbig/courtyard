@@ -18,35 +18,42 @@ const Cart = () => {
     };
 
     return (
-        <aside className="cart-sidebar">
-            <h2>Your Order</h2>
-            {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
-            ) : (
-                <>
-                    <ul className="cart-items">
-                        {cartItems.map((item) => (
-                            <li key={item._id} className="cart-item">
-                                <span className="cart-item-name">{item.name}</span>
-                                <div className="cart-item-controls">
-                                    <button onClick={() => removeFromCart(item._id)}>-</button>
-                                    <span>{item.quantity}</span>
-                                    <button onClick={() => addToCart(item)}>+</button>
-                                </div>
-                                <span className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="cart-total">
-                        <strong>Total:</strong>
-                        <span>${totalAmount.toFixed(2)}</span>
-                    </div>
-                    <button className="checkout-btn" onClick={handleCheckout}>
-                        Proceed to Checkout
-                    </button>
-                </>
-            )}
-        </aside>
+        <div className="card shadow-sm sticky-top" style={{ top: '20px' }}>
+            <div className="card-body">
+                <h4 className="card-title mb-3">Your Order</h4>
+                {cartItems.length === 0 ? (
+                    <p className="text-muted">Your cart is empty.</p>
+                ) : (
+                    <>
+                        <ul className="list-group list-group-flush">
+                            {cartItems.map((item) => (
+                                <li key={item._id} className="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <div>
+                                        <div>{item.name}</div>
+                                        <small className="text-muted">${item.price.toFixed(2)}</small>
+                                    </div>
+                                    <div className="d-flex align-items-center">
+                                        <button className="btn btn-sm btn-outline-secondary" onClick={() => removeFromCart(item._id)}>-</button>
+                                        <span className="mx-2">{item.quantity}</span>
+                                        <button className="btn btn-sm btn-outline-secondary" onClick={() => addToCart(item)}>+</button>
+                                    </div>
+                                    <span className="fw-bold">${(item.price * item.quantity).toFixed(2)}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="d-flex justify-content-between fw-bold fs-5 mt-3 pt-3 border-top">
+                            <span>Total:</span>
+                            <span>${totalAmount.toFixed(2)}</span>
+                        </div>
+                        <div className="d-grid mt-3">
+                            <button className="btn btn-success" onClick={handleCheckout}>
+                                Proceed to Checkout
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
     );
 };
 

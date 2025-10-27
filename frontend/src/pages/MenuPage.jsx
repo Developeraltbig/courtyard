@@ -30,26 +30,33 @@ const MenuPage = () => {
         ? menu.menuItems.filter(item => item.category._id === selected_category)
         : menu.menuItems;
 
-    if (loading) return <div className="loading">Loading Menu...</div>;
+        if (loading) return <div className="d-flex justify-content-center align-items-center vh-100"><h2>Loading Menu...</h2></div>;
 
     return (
-        <div className="app-container">
+        <div style={{ backgroundColor: '#fdf6f2', minHeight: '100vh' }}>
             <Header tableNumber={tableNumber} />
-            <main className="main-content">
-                <div className="menu-section">
-                    <CategoryList
-                        categories={menu.categories}
-                        selectedCategory={selectedCategory}
-                        onSelectCategory={setSelectedCategory}
-                    />
-                    <div className="menu-grid">
-                        {filteredMenuItems.map(item => (
-                            <MenuItem key={item._id} item={item} />
-                        ))}
+            <div className="container-fluid p-4">
+                <div className="row">
+                    {/* Menu Section */}
+                    <div className="col-lg-8">
+                        <CategoryList
+                            categories={menu.categories}
+                            selectedCategory={selectedCategory}
+                            onSelectCategory={setSelectedCategory}
+                        />
+                        <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                            {filteredMenuItems.map(item => (
+                                <MenuItem key={item._id} item={item} />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Cart Section */}
+                    <div className="col-lg-4">
+                        <Cart />
                     </div>
                 </div>
-                <Cart />
-            </main>
+            </div>
         </div>
     );
 };

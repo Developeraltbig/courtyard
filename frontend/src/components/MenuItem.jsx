@@ -5,16 +5,18 @@ const MenuItem = ({ item }) => {
     const { addToCart } = useContext(CartContext);
 
     return (
-        <div className="menu-item">
-            <img src={item.imageUrl} alt={item.name} className="menu-item-image" />
-            <div className="menu-item-details">
-                <h3 className="menu-item-name">{item.name}</h3>
-                <p className="menu-item-description">{item.description}</p>
-                <div className="menu-item-footer">
-                    <span className="menu-item-price"><i className='fa fa-inr'></i>{item.price.toFixed(2)}</span>
-                    <button className="add-to-cart-btn" onClick={() => addToCart(item)}>
-                        Add to Cart
-                    </button>
+        <div className="col">
+            <div className="card h-100 shadow-sm">
+                <img src={item.imageUrl} className="card-img-top" alt={item.name} style={{ height: '200px', objectFit: 'cover' }} />
+                <div className="card-body d-flex flex-column">
+                    <h5 className="card-title">{item.name}</h5>
+                    <p className="card-text text-muted flex-grow-1">{item.description}</p>
+                    <div className="d-flex justify-content-between align-items-center mt-auto">
+                        <span className="fw-bold fs-5 text-danger">${item.price.toFixed(2)}</span>
+                        <button className="btn btn-danger" onClick={() => addToCart(item)}>
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

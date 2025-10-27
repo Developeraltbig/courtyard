@@ -1,10 +1,11 @@
 import React from 'react';
 
 const Header = ({ tableNumber }) => {
+    // We use a custom class 'bg-primary-custom' which we'll define in our CSS
     return (
-        <header className="app-header">
+        <header className="bg-primary-custom text-white p-3 text-center shadow-sm">
             <h1>The CourtYard Diaries</h1>
-            {tableNumber && <p className="table-info">Table #{tableNumber}</p>}
+            {tableNumber && <p className="mb-0 fs-5">Table #{tableNumber}</p>}
         </header>
     );
 };

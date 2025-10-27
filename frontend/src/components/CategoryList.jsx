@@ -2,10 +2,10 @@ import React from 'react';
 
 const CategoryList = ({ categories, selectedCategory, onSelectCategory }) => {
     return (
-        <nav className="category-nav">
+        <nav className="mb-4">
             <button
                 onClick={() => onSelectCategory(null)}
-                className={!selectedCategory ? 'active' : ''}
+                className={`btn me-2 ${!selectedCategory ? 'btn-danger' : 'btn-outline-secondary'}`}
             >
                 All
             </button>
@@ -13,7 +13,7 @@ const CategoryList = ({ categories, selectedCategory, onSelectCategory }) => {
                 <button
                     key={category._id}
                     onClick={() => onSelectCategory(category._id)}
-                    className={selectedCategory === category._id ? 'active' : ''}
+                    className={`btn me-2 ${selectedCategory === category._id ? 'btn-danger' : 'btn-outline-secondary'}`}
                 >
                     {category.name}
                 </button>
