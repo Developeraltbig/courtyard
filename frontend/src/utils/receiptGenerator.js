@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable'; // <-- 1. Import autoTable as a function
 
 export const generateReceipt = (order) => {
     // 1. Create a new PDF document
@@ -36,7 +36,9 @@ export const generateReceipt = (order) => {
         tableRows.push(itemData);
     });
 
-    doc.autoTable({
+    // --- 3. THE FIX IS HERE ---
+    // Instead of doc.autoTable(...), we now call it as a function, passing 'doc'
+    autoTable(doc, {
         head: [tableColumn],
         body: tableRows,
         startY: 70, // Y position to start the table
@@ -45,7 +47,7 @@ export const generateReceipt = (order) => {
     });
 
     // 4. Add the total amount
-    const finalY = doc.lastAutoTable.finalY; // Get the Y position after the table
+    const finalY = doc.lastAutoTable.finalY; // This part remains the same
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text(`Grand Total: ₹${order.totalAmount.toFixed(2)}`, 14, finalY + 15);
