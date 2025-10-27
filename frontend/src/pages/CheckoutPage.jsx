@@ -11,9 +11,9 @@ const CheckoutPage = () => {
 
 
 
+    // State is simplified: we only need to track submission status
     const [tableNumber, setTableNumber] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState('Card');
-    const [isProcessing, setIsProcessing] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [customer, setCustomer] = useState({ name: '', phone: '' });
 
     const totalAmount = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -30,29 +30,27 @@ const CheckoutPage = () => {
             return;
         }
 
-        setIsProcessing(true);
-        
+        setIsSubmitting(true); // Disable the button
+
         const orderData = {
-            tableNumber: parseInt(tableNumber, 10), // Use state for table number
+            tableNumber: parseInt(tableNumber, 10),
             customer,
             items: cartItems.map(item => ({ menuItem: item._id, quantity: item.quantity })),
             totalAmount
         };
 
-        // --- SIMULATE PAYMENT DELAY ---
-        setTimeout(async () => {
-            try {
-                const response = await placeOrder(orderData);
-                const orderId = response.data._id;
-                clearCart();
-                navigate(`/order/${orderId}`);
-            } catch (error) {
-                console.error('Failed to place order:', error);
-                alert('Could not place your order. Please try again.');
-                setIsProcessing(false);
-            }
-        }, 2000); // 2-second fake processing delay
+        try {
+            const response = await placeOrder(orderData);
+            const orderId = response.data._id;
+            clearCart();
+            navigate(`/order/${orderId}`);
+        } catch (error) {
+            console.error('Failed to place order:', error);
+            alert('Could not place your order. Please try again.');
+            setIsSubmitting(false); // Re-enable the button on error
+        }
     };
+
 
     return (
         <div className="app-container" style={{ backgroundColor: '#fdf6f2' }}>
@@ -111,21 +109,11 @@ const CheckoutPage = () => {
                                     required
                                 />
                         </div>
-                            <h4 className="mt-4 mb-3">Payment Method</h4>
-                            <div className="my-3">
-                                <div className="form-check">
-                                    <input id="card" name="paymentMethod" type="radio" className="form-check-input" checked={paymentMethod === 'Card'} onChange={() => setPaymentMethod('Card')} required />
-                                    <label className="form-check-label" htmlFor="card">Demo Credit card</label>
-                                </div>
-                                <div className="form-check">
-                                    <input id="cash" name="paymentMethod" type="radio" className="form-check-input" checked={paymentMethod === 'Cash'} onChange={() => setPaymentMethod('Cash')} required />
-                                    <label className="form-check-label" htmlFor="cash">Pay with Cash</label>
-                                </div>
-                            </div>
 
-                            <div className="d-grid mt-4">
-                                <button type="submit" className="btn btn-success btn-lg" disabled={isProcessing}>
-                                    {isProcessing ? 'Processing Payment...' : `Pay ₹${totalAmount.toFixed(2)}`}
+
+                          <div className="d-grid mt-4">
+                                <button type="submit" className="btn btn-success btn-lg" disabled={isSubmitting}>
+                                    {isSubmitting ? 'Placing Order...' : 'Place Order'}
                                 </button>
                             </div>
                     </form>
