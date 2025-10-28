@@ -5,7 +5,7 @@ import MenuPage from './pages/MenuPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import OrderConfirmationPage from './pages/OrderConfirmationPage.jsx';
 import './assets/css/App.css';
-
+import Home from './admin/components/Home';
 function App() {
     return (
         <CartProvider>
@@ -16,6 +16,7 @@ function App() {
                     <Route path="/order/:orderId" element={<OrderConfirmationPage />} />
                     <Route path="/" element={<Navigate to="/table/1" />} /> 
                     <Route path="*" element={<Navigate to="/table/1" />} /> 
+                    <Route path="/admin/home" element={<Home />}/>
                 </Routes>
             </Router>
         </CartProvider>
